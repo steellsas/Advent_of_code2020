@@ -1,36 +1,77 @@
-
 with open("input.txt") as f:
     content = f.read()
-    lines_lst =[ [line.split(), True] for line in content.split('\n') ]
-
-ind = 0
-acum = 0
-
-while ind < len(lines_lst):
-
-    com = lines_lst[ind][0][0]
-    num = int(lines_lst[ind][0][1])
-    flag = lines_lst[ind][1]
-    # if not flag:
-    #     print(ind, flag)
-    #     break
-    print(com, num,'veliava', flag, ind)
+    lines_lst = [line.split() for line in content.split('\n')]
 
 
-    if com == "acc":
-        acum = acum + num
-    lines_lst[ind][1] = False
-    if com == 'jmp':
-        if not lines_lst[ind + num- 1][1]:
-            print(lines_lst[ind + num- 1][1])
-            lines_lst[ind][0][0] = 'nop'
+def last_jmp(new_lst):
+    valid_f = True
+    line = 0
+    acum = 0
+    step_lst = []
+    while True:
 
-        else:
-            ind = ind + num
-            continue
+        com = new_lst[line][0]
+        num = int(new_lst[line][1])
+
+        # checking have all lines visit
+        if len(new_lst) - 1 == line:
+            valid_f = False
+        # check have visti line
+        if line in step_lst:
+            valid_f = False
+            return acum, valid_f
+
+        if com == "acc":
+            acum = acum + num
+            step_lst.append(line)
+            line = line + 1
+
+        if com == 'jmp':
+            step_lst.append(line)
+            line = line + num
+
+        if com == "nop":
+            line = line + 1
+
+        if valid_f == False:
+            return acum, True
+
+    return acum, False
 
 
-    print(acum)
-    ind = ind +1
+def part_two(lines_lst):
+    new_lst = lines_lst.copy()
+    for line in range(1, len(new_lst)):
+        com = lines_lst[line][0]
+        num = int(new_lst[line][1])
+        # change command and check is lines lst finish
+
+        if com == 'jmp':
+            com = "nop"
+        elif com == "nop":
+            com = 'jmp'
+
+        new_lst = lines_lst.copy()
+        new_lst[line] = com, num
+
+        acum, valided = last_jmp(new_lst)
+
+        if valided:
+            return acum
 
 
+answer = part_two(lines_lst)
+print(answer)
+
+# test = [ 'acc','jmp','nop','jmp']
+# test2 = test.copy()
+# for i in range(0, len(test2)):
+#     c = test[i]
+#     if test2[i] == 'acc':
+#         c  = 'jomp'
+#     elif test2[i] == 'jmp':
+#         c = 'jj'
+#
+#     test2 =test.copy()
+#     test2[i] = c
+#     print(test2)

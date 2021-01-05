@@ -12,7 +12,7 @@ while ind < len(lines_lst):
     com = lines_lst[ind][0][0]
     num = int(lines_lst[ind][0][1])
     flag = lines_lst[ind][1]
-    print(com, flag,num ,ind)
+
     if flag:
         lines_lst[ind][1] = False
         if com == "acc":
