@@ -62,16 +62,3 @@ def part_two(lines_lst):
 
 answer = part_two(lines_lst)
 print(answer)
-
-# test = [ 'acc','jmp','nop','jmp']
-# test2 = test.copy()
-# for i in range(0, len(test2)):
-#     c = test[i]
-#     if test2[i] == 'acc':
-#         c  = 'jomp'
-#     elif test2[i] == 'jmp':
-#         c = 'jj'
-#
-#     test2 =test.copy()
-#     test2[i] = c
-#     print(test2)
